@@ -1,7 +1,7 @@
 use std::net::TcpListener;
 use zero2prod::startup::run;
 
-use sqlx::{PgConnection, Connection};
+use sqlx::{Connection, PgConnection};
 use zero2prod::configuration::get_configuration;
 
 fn spawn_app() -> String {
@@ -58,7 +58,8 @@ async fn subscribe_returns_a_200_for_valid_form_data() {
 
     let saved = sqlx::query!("SELECT email, name FROM subscriptions",)
         .fetch_one(&mut connection)
-        .await.expect("Failed to fetch saved subscription");
+        .await
+        .expect("Failed to fetch saved subscription");
 
     assert_eq!(saved.email, "ursula_le_guin@gmail.com");
     assert_eq!(saved.name, "le guin");
